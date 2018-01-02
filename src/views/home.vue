@@ -7,12 +7,13 @@
 
     <div style="border:2px dashed red;">
       <p>
-        图片上传前预览：<input type="file" id="xdaTanFileImg" @change="xmTanUploadImg(this)" accept="image/*"/>
-        <input type="button" value="隐藏图片" onclick="document.getElementById('xmTanImg').style.display = 'none';"/>
-        <input type="button" value="显示图片" onclick="document.getElementById('xmTanImg').style.display = 'block';"/>
+        选择图片：<input type="file" id="xdaTanFileImg" @change="xmTanUploadImg($event)" accept="image/*" />
+        <input type="button" value="隐藏图片" onclick="document.getElementById('imgTarget').style.display = 'none';"/>
+        <input type="button" value="显示图片" onclick="document.getElementById('imgTarget').style.display = 'block';"/>
+        <input type="button" value="删除图片" onclick="document.getElementById('imgTarget').style.display = 'block';"/>
+        <input type="button" value="编辑图片" @click="editorImg"/>
       </p>
-      <img id="xmTanImg"/>
-      <div id="xmTanDiv"></div>
+      <img id="imgTarget"/>
     </div>
   </div>
 </template>
@@ -44,38 +45,33 @@
     },
     methods: {
       //选择图片，马上预览
-      xmTanUploadImg(obj) {
-        console.log(obj);
-
-        var file = obj.files[0];
-
-        console.log(file);
-        console.log("file.size = " + file.size);  //file.size 单位为byte
-
-        var reader = new FileReader();
-
-        //读取文件过程方法
-        reader.onloadstart = function (e) {
-          console.log("开始读取....");
+      xmTanUploadImg(e) {
+        /**
+         * 从 file 域获取 本地图片 url
+         */
+        // function getFileUrl(obj) {
+        //   let url;
+        //   url = window.URL.createObjectURL(obj.files.item(0));
+        //   return url;
+        // }
+        console.log(e)
+        let that = this
+        let file = e.target.files[0]
+        let imageSize =file.size / 1024
+        if (imageSize > 100) {
+          alert('请上传100k以下图片')
+        } else {
+          let reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = function() {
+            var dataUrl = reader.result
+            document.getElementById('imgTarget').src = dataUrl
+          }
         }
-        reader.onprogress = function (e) {
-          console.log("正在读取中....");
-        }
-        reader.onabort = function (e) {
-          console.log("中断读取....");
-        }
-        reader.onerror = function (e) {
-          console.log("读取异常....");
-        }
-        reader.onload = function (e) {
-          console.log("成功读取....");
-
-          var img = document.getElementById("xmTanImg");
-          img.src = e.target.result;
-          //或者 img.src = this.result;  //e.target == this
-        }
-
-        reader.readAsDataURL(file)
+      },
+      editorImg() {
+        let imgTarget = document.getElementById('imgTarget')
+        console.log(imgTarget)
       }
     }
   }
