@@ -62,8 +62,10 @@
           alert('请上传100k以下图片')
         } else {
           let reader = new FileReader()
+          // 读出 base64
           reader.readAsDataURL(file)
           reader.onload = function() {
+            // 图片的 base64 格式, 可以直接当成 img 的 src 属性值
             var dataUrl = reader.result
             document.getElementById('imgTarget').src = dataUrl
           }
