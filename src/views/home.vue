@@ -8,6 +8,7 @@
         <input type="button" value="删除图片" onclick="document.getElementById('imgTarget').style.display = 'block';"/>
         <input type="button" value="编辑图片" @click="editorImg"/>
         <input type="button" value="保存" @click="editorImgSave"/>
+        <input type="button" value="重置" @click="editorImgReset"/>
       </p>
     </div>
     <img id="imgTarget"/>
@@ -68,10 +69,18 @@
             console.log(e.detail.scaleY);
           },
           dragMode: 'move',
-          aspectRatio: -1
+          aspectRatio: 0,
+          responsive: true,
+          modal: false,
+          guides: true,
+          center: false,
+          highlight: true
         });
       },
-      editorImgSave() {}
+      editorImgSave() {},
+      editorImgReset() {
+
+      }
     }
   }
 </script>
