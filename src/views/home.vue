@@ -1,10 +1,5 @@
 <template>
   <div class="home">
-    <!-- Wrap the image or canvas element with a block element (container) -->
-    <div>
-      <img id="image" src="../assets/img/picture.jpg">
-    </div>
-
     <div style="border:2px dashed red;">
       <p>
         选择图片：<input type="file" id="xdaTanFileImg" @change="xmTanUploadImg($event)" accept="image/*" />
@@ -12,9 +7,10 @@
         <input type="button" value="显示图片" onclick="document.getElementById('imgTarget').style.display = 'block';"/>
         <input type="button" value="删除图片" onclick="document.getElementById('imgTarget').style.display = 'block';"/>
         <input type="button" value="编辑图片" @click="editorImg"/>
+        <input type="button" value="保存" @click="editorImgSave"/>
       </p>
-      <img id="imgTarget"/>
     </div>
+    <img id="imgTarget"/>
   </div>
 </template>
 
@@ -28,20 +24,6 @@
         //使选择控件不可操作
         document.getElementById("xdaTanFileImg").setAttribute("disabled", "disabled");
       }
-
-      var image = document.getElementById('image');
-      var cropper = new Cropper(image, {
-        // aspectRatio: 16 / 9,
-        crop: function(e) {
-          console.log(e.detail.x);
-          console.log(e.detail.y);
-          console.log(e.detail.width);
-          console.log(e.detail.height);
-          console.log(e.detail.rotate);
-          console.log(e.detail.scaleX);
-          console.log(e.detail.scaleY);
-        }
-      });
     },
     methods: {
       //选择图片，马上预览
@@ -73,8 +55,23 @@
       },
       editorImg() {
         let imgTarget = document.getElementById('imgTarget')
-        console.log(imgTarget)
-      }
+
+        var cropper = new Cropper(imgTarget, {
+          // aspectRatio: 16 / 9,
+          crop: function(e) {
+            console.log(e.detail.x);
+            console.log(e.detail.y);
+            console.log(e.detail.width);
+            console.log(e.detail.height);
+            console.log(e.detail.rotate);
+            console.log(e.detail.scaleX);
+            console.log(e.detail.scaleY);
+          },
+          dragMode: 'move',
+          aspectRatio: -1
+        });
+      },
+      editorImgSave() {}
     }
   }
 </script>
